@@ -1,26 +1,40 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { updateUser } from './actions/user-actions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { connect } from 'react-redux';
+
+class App extends Component {
+  constructor(props){
+    super(props);
+
+  this.onUpdateUser = this.onUpdateUser.bind(this);    
+  }
+  onUpdateUser() {
+    console.log(this.props);
+    this.props.onUpdateUser('Sammy');
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <div onClick={this.onUpdateUser}>Update User</div>
+        {this.props.user}
+      </div>
+    );
+  }
 }
 
-export default App;
+
+
+const mapStateToProps = state => ({
+  products: state.products,
+  user: state.user
+});
+
+const mapActionsToProps = {
+  onUpdateUser: updateUser
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(App);
